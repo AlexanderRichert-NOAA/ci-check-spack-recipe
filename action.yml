@@ -1,0 +1,29 @@
+# This action.yml provides a GitHub Action for checking that a Spack recipe
+# for a CMake-based package contains variants reflecting the available CMake
+# options.
+#
+# Alex Richert, April 2024
+name: 'Spack recipe check'
+description: 'Check the Spack recipe for a CMake-based package'
+
+inputs:
+  recipe-file:
+    required: true
+  cmakelists-txt:
+    required: true
+  ignore-list:
+    description: 'Space-delimited list of CMake option names to ignore because they are not needed in the Spack recipe (e.g., ENABLE_DOCS)'
+    default: ''
+
+runs:
+  using: "composite"
+  steps:
+
+    - name: "Check Spack recipe"
+      shell: bash
+      run: |
+        ignore_exp="(?!($(echo ${{ inputs.ignore-list }} | sed 's:\s\+:|:g')))"
+        for opt in $(grep -ioP "^option\(\K${ignore_exp}[^ ]+" ${{ inputs.cmakelists-txt }}) ; do
+          echo "Checking for presence of '$opt' CMake option in package.py"
+          grep -cP "define.+\b${opt}\b" ${{ inputs.recipe-file }}
+        done

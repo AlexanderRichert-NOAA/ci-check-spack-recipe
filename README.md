@@ -1,4 +1,4 @@
-# check-spack-recipe
+# GitHub CI Action: check-spack-recipe
 
 This repository provides a GitHub Action for checking a Spack recipe for a 
 CMake-based package to confirm that it contains variants reflectable the

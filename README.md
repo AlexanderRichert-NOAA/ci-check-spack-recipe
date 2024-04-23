@@ -1,7 +1,7 @@
 # GitHub CI Action: check-spack-recipe
 
 This repository provides a GitHub Action for checking a Spack recipe for a 
-CMake-based package to confirm that it contains variants reflectable the
+CMake-based package to confirm that it contains variants reflecting the
 options available in a given CMakeLists.txt.
 
 This repository supports [NCEPLIBS](https://github.com/NOAA-EMC/NCEPLIBS) CI

@@ -32,8 +32,8 @@ runs:
           echo -n "Checking for presence of '$opt' CMake option in package.py..."
           found=$(grep -cP "define.+\b${opt}\b" ${{ inputs.recipe-file }} || true)
           if [ $found -eq 0 ]; then
-            echo "Not found"
-            count+=${found}
+            echo " Not found"
+            count+=1
           else
             echo
           fi

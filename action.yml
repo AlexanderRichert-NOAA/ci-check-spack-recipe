@@ -30,5 +30,6 @@ runs:
         ignore_exp="(?!($(echo ${{ inputs.ignore-list }} | sed 's:\s\+:|:g')))"
         for opt in $(grep -ioP "^option\(\K[^ ]+" ${{ inputs.cmakelists-txt }} | grep -Ev "$ignore_exp") ; do
           echo "Checking for presence of '$opt' CMake option in package.py"
-          grep -cP "define.+\b${opt}\b" ${{ inputs.recipe-file }}
+          count+=$(grep -cP "define.+\b${opt}\b" ${{ inputs.recipe-file }} || true)
         done
+        exit $count

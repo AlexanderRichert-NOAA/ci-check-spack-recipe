@@ -12,7 +12,7 @@ inputs:
   cmakelists-txt:
     required: true
   ignore-list:
-    description: 'Space-delimited list of CMake option names to ignore because they are not needed in the Spack recipe (e.g., ENABLE_DOCS)'
+    description: 'Space- or comma-delimited list of CMake option names to ignore because they are not needed in the Spack recipe (e.g., ENABLE_DOCS)'
     default: ''
 
 runs:
@@ -27,7 +27,7 @@ runs:
     - name: "Check Spack recipe"
       shell: bash
       run: |
-        ignore_exp="$(echo ${{ inputs.ignore-list }} | sed 's:\s\+:|:g')"
+        ignore_exp="$(echo ${{ inputs.ignore-list }} | sed 's:[\s,]\+:|:g')"
         for opt in $(grep -ioP "^option\(\K[^ ]+" ${{ inputs.cmakelists-txt }} | grep -Ev "$ignore_exp") ; do
           echo -n "Checking for presence of '$opt' CMake option in package.py..."
           found=$(grep -cP "define.+\b${opt}\b" ${{ inputs.recipe-file }} || true)
